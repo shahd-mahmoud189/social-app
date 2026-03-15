@@ -102,7 +102,7 @@ export default function PostCard({
 
   return (
     <>
-     <div className="mb-5 bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+     {post&&<div className="mb-5 bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
       {/* Header with User Info */}
       <div className="flex items-center justify-between p-4 pb-3">
         <div className="flex items-center gap-3">
@@ -263,7 +263,7 @@ export default function PostCard({
           Share
         </Button>
       </div>
-    </div>
+    </div>}
     </>
   );
 }
