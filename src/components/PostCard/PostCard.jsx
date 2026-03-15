@@ -227,7 +227,7 @@ export default function PostCard({
 
       {/* Action Buttons */}
       <div className="flex border-t border-gray-100">
-        <Button
+        <button
          
           className={`flex-1 rounded-none h-11 text-sm font-medium gap-2 ${
             post.likes.includes(userData?._id) === true
@@ -236,10 +236,10 @@ export default function PostCard({
           }`}
           onClick={() => mutateLike(post._id)}
         >
-          <i className={`${post.likes.includes(userData?._id) ? "fa-solid" : "fa-regular"} fa-thumbs-up`}></i>
+          <i className={`${post.likes.includes(userData?._id) ? "fa-solid" : "fa-regular"} fa-thumbs-up mr-2`}></i>
           Like
-        </Button>
-        <Button
+        </button>
+        <button
           
           className="bg-white flex-1 rounded-none h-11 text-sm font-medium text-gray-600 hover:text-blue-500 hover:bg-blue-50 gap-2 border-x border-gray-100"
           onClick={() => {
@@ -247,10 +247,10 @@ export default function PostCard({
             setPostId(post._id)
           }}
         >
-          <i className="fa-regular fa-comment"></i>
+          <i className="fa-regular fa-comment mr-2"></i>
           Comment
-        </Button>
-        <Button
+        </button>
+        <button
           
           className="bg-white flex-1 rounded-none h-11 text-sm font-medium text-gray-600 hover:text-blue-500 hover:bg-blue-50 gap-2"
           onClick={() => {
@@ -259,9 +259,9 @@ export default function PostCard({
             setPost(post);
           }}
         >
-          <i className="fa-solid fa-share-nodes"></i>
+          <i className="fa-solid fa-share-nodes mr-2"></i>
           Share
-        </Button>
+        </button>
       </div>
     </div>}
     </>

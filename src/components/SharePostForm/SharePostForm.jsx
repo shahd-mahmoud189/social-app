@@ -27,6 +27,7 @@ export default function SharePostForm({ toggle, isFormOpen, postId, setIsLiked, 
 
       queryClient.invalidateQueries(["allPosts"]);
       queryClient.invalidateQueries(["feed"]);
+      queryClient.invalidateQueries(["myPosts"]);
     },
     onError: () => {
       console.log("errorrrrrr");
@@ -63,12 +64,12 @@ export default function SharePostForm({ toggle, isFormOpen, postId, setIsLiked, 
       
       {/* Container to mimic the main content layout */}
       <div className={`w-full max-w-7xl mx-auto gap-6 relative ${isFormOpen ? 'flex' : 'hidden'}`}>        
-  <div onClick={() => toggle()} className="fixed inset-0 bg-black/50 z-40"></div>
+  <div onClick={() => {toggle(); setMsg(null)}} className="fixed inset-0 bg-black/50 z-40"></div>
 
   {/* Share Post Modal */}
   <form 
     onSubmit={handleSubmit(mutate)} 
-    className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[95%] sm:w-[550px] max-h-[90vh] flex flex-col bg-white rounded-2xl shadow-[0_4px_24px_rgba(0,0,0,0.1)] border border-gray-100 overflow-hidden"
+    className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[95%] sm:w-137.5 max-h-[90vh] flex flex-col bg-white rounded-2xl shadow-[0_4px_24px_rgba(0,0,0,0.1)] border border-gray-100 overflow-hidden"
   >
     
     {/* Modal Header */}
@@ -86,20 +87,20 @@ export default function SharePostForm({ toggle, isFormOpen, postId, setIsLiked, 
     {/* Scrollable Modal Body */}
     <div className="p-4 sm:p-5 overflow-y-auto custom-scrollbar">
       {msg && (
-        <Alert
-          color={msg == "post shared successfully" ? "success" : "failure"}
-          className="font-medium mb-4"
-        >
-          {msg}
-        </Alert>
-      )}
+  <Alert
+    color={msg === "post shared successfully" ? "success" : "failure"}
+    className="font-medium mb-4"
+  >
+    {msg}
+  </Alert>
+)}
 
       {/* Input Field */}
       <div className="mb-4">
         <textarea 
           {...register('body')}
           placeholder="say something about this...."
-          className="w-full text-sm border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:border-gray-300 placeholder-gray-400 min-h-[100px] resize-none"
+          className="w-full text-sm border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:border-gray-300 placeholder-gray-400 min-h-25 resize-none"
         />
       </div>
 
@@ -121,7 +122,7 @@ export default function SharePostForm({ toggle, isFormOpen, postId, setIsLiked, 
 
         {/* Share Icon and Text */}
         <div className="flex flex-col gap-2.5">
-          <p className="text-sm sm:text-base text-gray-800 break-words">{post?.body}</p>
+          <p className="text-sm sm:text-base text-gray-800 wrap-break-word">{post?.body}</p>
           {post?.image && (
             <img 
               src={post.image} 
@@ -146,7 +147,7 @@ export default function SharePostForm({ toggle, isFormOpen, postId, setIsLiked, 
       <button 
         type="submit"
         disabled={loading}
-        className="px-4 sm:px-6 py-2 sm:py-2.5 bg-[#1877f2] hover:bg-[#166fe5] text-white text-sm font-semibold rounded-lg shadow-sm flex items-center justify-center min-w-[100px]"
+        className="px-4 sm:px-6 py-2 sm:py-2.5 bg-[#1877f2] hover:bg-[#166fe5] text-white text-sm font-semibold rounded-lg shadow-sm flex items-center justify-center min-w-25"
       >
         {loading ? (
           <ThreeDots

@@ -6,7 +6,7 @@ export const AuthContext = createContext()
 export default function AuthContextProvider({children}) {
 
     const [token, setToken] = useState(localStorage.getItem('token'))
-    const [userData, setUserData] = useState()
+    const [userData, setUserData] = useState(null)
 
     async function getUserData() {
     try {
@@ -21,9 +21,11 @@ export default function AuthContextProvider({children}) {
     }
   }  
 
-  useEffect(()=>{
-    getUserData()
-  },[])
+  useEffect(() => {
+  if (token) {
+    getUserData();
+  }
+}, [token]);
 
   return (
     <AuthContext.Provider value={{token, setToken, userData}}>

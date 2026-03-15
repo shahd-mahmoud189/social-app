@@ -1,10 +1,9 @@
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import { Card } from "flowbite-react";
 
 export default function CardSkeleton() {
   return (
-    <Card className="mx-auto my-5">
+    <div className="mx-auto my-5 bg-white rounded p-8">
       {/* Header with User Info */}
       <div className="flex items-center gap-3 mb-4">
         <Skeleton circle width={40} height={40} />
@@ -37,6 +36,6 @@ export default function CardSkeleton() {
         <div className="flex-1"><Skeleton height={40} borderRadius={50} /></div>
         <div className="flex-1"><Skeleton height={40} borderRadius={50} /></div>
       </div>
-    </Card>
+    </div>
   );
 }

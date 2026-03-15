@@ -21,7 +21,7 @@ export default function Comment({ comment, setCommentBtn, setCommentId, deleteCo
             <p className="text-gray-700">{comment.content}</p>
           </div>
         </div>
-        {userData._id === comment.commentCreator._id && (
+        {userData?._id === comment.commentCreator._id && (
           <Dropdown color={"transparent"}>
             <DropdownItem onClick={()=>deleteComment(comment._id)}>Delete</DropdownItem>
             <DropdownItem onClick={()=>{setCommentBtn("update"); setCommentId(comment._id)}}>Edit</DropdownItem>

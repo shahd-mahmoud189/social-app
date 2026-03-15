@@ -75,14 +75,14 @@ export default function AddPostForm() {
         <form className="space-y-5" onSubmit={handleSubmit(mutate)}>
           {/* Post Text Area */}
           <div className="space-y-2">
-            <Label 
+            <label 
               htmlFor="postText" 
               className="text-sm font-medium text-gray-700 flex items-center gap-2"
             >
               <i className="fa-regular fa-comment text-blue-500" />
               What's on your mind?
-            </Label>
-            <Textarea
+            </label>
+            <textarea
               id="postText"
               placeholder="Share your thoughts..."
               rows={4}
@@ -93,15 +93,16 @@ export default function AddPostForm() {
 
           {/* Image Upload */}
           <div className="space-y-2">
-            <Label 
+            <label 
               htmlFor="postImage" 
               className="text-sm font-medium text-gray-700 flex items-center gap-2"
             >
               <i className="fa-regular fa-image text-blue-500" />
               Upload an Image
-            </Label>
+            </label>
             <div className="relative">
-              <FileInput
+              <input
+                type="file"
                 id="postImage"
                 accept="image/*"
                 className="w-full px-4 py-3 bg-gray-50 border border-gray-200 border-dashed rounded-lg text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-500 file:text-white hover:file:bg-blue-600 file:cursor-pointer cursor-pointer transition-all"
@@ -116,6 +117,7 @@ export default function AddPostForm() {
           {/* Submit Button */}
           <div className="flex">
             <button 
+              disabled={loading}
               type="submit" 
               className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-2.5 px-6 rounded-lg transition-colors"
             >
