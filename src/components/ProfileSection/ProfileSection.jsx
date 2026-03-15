@@ -5,7 +5,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function ProfileSection({ postsLength, userData, isFollowing}) {
-  const { token, userData: myData } = useContext(AuthContext);
+  const { token, userData: myData , setUserData} = useContext(AuthContext);
 
   const { register, handleSubmit, formState } = useForm({
     defaultValues: {
@@ -19,7 +19,7 @@ export default function ProfileSection({ postsLength, userData, isFollowing}) {
     mutationFn: uploadPhoto,
     onSuccess: () => {
       console.log("successssss");
-      queryClient.invalidateQueries(["user", myData?._id]);
+      queryClient.invalidateQueries(["userData"]);
       queryClient.invalidateQueries(["myPosts"]);
     },
     onError: () => {
@@ -38,6 +38,7 @@ export default function ProfileSection({ postsLength, userData, isFollowing}) {
       );
       if (data.success === true) {
         // setMsg(data.message);
+        setUserData(prev => ({ ...prev, photo: data.data.photo }));
         console.log(data);
       }
       return data.data;

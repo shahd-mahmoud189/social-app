@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { createContext, useEffect, useState } from 'react'
 
@@ -21,6 +22,11 @@ export default function AuthContextProvider({children}) {
     }
   }  
 
+  const {data}= useQuery({
+    queryFn:getUserData,
+    queryKey:["userData"],
+  })
+
   useEffect(() => {
   if (token) {
     getUserData();
@@ -28,7 +34,7 @@ export default function AuthContextProvider({children}) {
 }, [token]);
 
   return (
-    <AuthContext.Provider value={{token, setToken, userData}}>
+    <AuthContext.Provider value={{token, setToken, userData, setUserData}}>
       {children}
     </AuthContext.Provider>
   )
