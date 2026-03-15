@@ -230,13 +230,13 @@ export default function PostCard({
         <Button
          
           className={`flex-1 rounded-none h-11 text-sm font-medium gap-2 ${
-            post.likes.includes(userData._id) === true
+            post.likes.includes(userData?._id) === true
               ? "text-blue-500 bg-blue-50"
               : "text-gray-600 bg-white hover:text-blue-500 hover:bg-blue-50"
           }`}
           onClick={() => mutateLike(post._id)}
         >
-          <i className={`${post.likes.includes(userData._id) ? "fa-solid" : "fa-regular"} fa-thumbs-up`}></i>
+          <i className={`${post.likes.includes(userData?._id) ? "fa-solid" : "fa-regular"} fa-thumbs-up`}></i>
           Like
         </Button>
         <Button

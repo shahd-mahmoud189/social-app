@@ -18,6 +18,7 @@ export default function Register() {
     reValidateMode: "onChange",
     defaultValues: {
       name: "",
+      username: "",
       email: "",
       password: "",
       rePassword: "",
@@ -71,7 +72,7 @@ export default function Register() {
                 className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2"
               >
                 <i className="fa-solid fa-user text-blue-500"></i>
-                Your name
+                Name
               </label>
               <input
                 {...register("name")}
@@ -88,6 +89,29 @@ export default function Register() {
               )}
             </div>
 
+            <div>
+              <label
+                htmlFor="username"
+                className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2"
+              >
+                <i className="fa-solid fa-user text-blue-500"></i>
+                Username
+              </label>
+              <input
+                {...register("username")}
+                id="username"
+                type="text"
+                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                placeholder="Enter your username"
+              />
+              {formState.errors.username && (
+                <p className="mt-2 text-sm text-red-500 flex items-center gap-1">
+                  <i className="fa-solid fa-circle-exclamation"></i>
+                  {formState.errors.username.message}
+                </p>
+              )}
+            </div>
+
             {/* Email Field */}
             <div>
               <label
@@ -95,7 +119,7 @@ export default function Register() {
                 className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2"
               >
                 <i className="fa-solid fa-envelope text-blue-500"></i>
-                Your email
+                Email
               </label>
               <input
                 {...register("email")}
@@ -119,7 +143,7 @@ export default function Register() {
                 className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2"
               >
                 <i className="fa-solid fa-lock text-blue-500"></i>
-                Your password
+                Password
               </label>
               <input
                 {...register("password")}

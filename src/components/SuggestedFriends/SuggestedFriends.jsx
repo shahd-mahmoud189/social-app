@@ -9,6 +9,7 @@ export default function SuggestedFriends() {
 
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState();
+  const [followingId, setFollowingId] = useState(null);
 
   const toggle = () => setIsOpen(!isOpen);
   const queryClient = useQueryClient();
@@ -23,6 +24,9 @@ export default function SuggestedFriends() {
 
   const { mutate, isPending } = useMutation({
     mutationFn: follow,
+    onMutate: (id) => {
+      setFollowingId(id);
+    },
     onSuccess: () => {
       console.log("successssss");
       queryClient.invalidateQueries(["suggestions"]);
@@ -63,20 +67,16 @@ export default function SuggestedFriends() {
     }
   }
 
-
-
   return (
     <div className="flex justify-center items-start mt-4">
       {/* Card Container */}
-      <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden" >
+      <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
         {/* Header with gradient */}
         <div className=" px-5 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <i className="fa-solid fa-user-group text-lg text-blue-500"></i>
-              <h2 className="text-lg font-bold ">
-                Suggested Friends
-              </h2>
+              <h2 className="text-lg font-bold ">Suggested Friends</h2>
             </div>
             <div className="flex items-center gap-3">
               <span className="bg-blue-100 font-semibold px-2.5 py-0.5 rounded-full text-sm">
@@ -99,7 +99,11 @@ export default function SuggestedFriends() {
         {/* Friends List */}
         <div className={`p-4 ${isOpen ? "block" : "hidden"}`}>
           <div className="space-y-3">
-            {suggestions?.length === 0&&<><Empty/></>}
+            {suggestions?.length === 0 && (
+              <>
+                <Empty />
+              </>
+            )}
             {suggestions?.map((suggestion) => (
               <div
                 key={suggestion._id}
@@ -120,7 +124,10 @@ export default function SuggestedFriends() {
 
                   {/* Info */}
                   <div className="flex-1 min-w-0">
-                    <Link to={`/userProfile/${suggestion._id}`} className="font-semibold text-gray-900 truncate">
+                    <Link
+                      to={`/userProfile/${suggestion._id}`}
+                      className="font-semibold text-gray-900 truncate"
+                    >
                       {suggestion.name}
                     </Link>
                   </div>
@@ -132,11 +139,13 @@ export default function SuggestedFriends() {
                   >
                     {/* <i className="fa-solid fa-user-plus text-xs"></i> */}
                     {/* <span>Follow</span> */}
-                    {isPending ? (
-                      'Following...'
+                    {followingId === suggestion._id ? (
+                      "Following..."
                     ) : (
-                      <><i className="fa-solid fa-user-plus text-xs"></i>
-                      Follow</>
+                      <>
+                        <i className="fa-solid fa-user-plus text-xs"></i>
+                        Follow
+                      </>
                     )}
                   </button>
                 </div>
@@ -155,8 +164,6 @@ export default function SuggestedFriends() {
               </div>
             ))}
           </div>
-
-          
         </div>
       </div>
     </div>

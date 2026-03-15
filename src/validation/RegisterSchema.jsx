@@ -2,7 +2,8 @@ import z from "zod";
 
 export const schema = z
   .object({
-    name: z.string().min(3).max(10),
+    name: z.string().min(3).max(20),
+    username: z.string().min(3).max(10),
     email: z.string().email(),
     password: z
       .string()

@@ -46,7 +46,7 @@ export default function PostDetails() {
 
   return (
     <>
-      <div className="container mx-auto w-full md:w-150 py-4">
+      <div className="container mx-auto w-full md:w-150 py-4 px-8">
         {isLoading && <CardSkeleton />}
         {isFetched && (
           <PostCard

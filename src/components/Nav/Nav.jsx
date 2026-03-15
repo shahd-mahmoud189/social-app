@@ -1,21 +1,21 @@
 import { useContext, useState } from "react";
-import { Link,  NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import React from "react";
 
 export default function Nav() {
-
-  const {token, setToken, userData} = useContext(AuthContext);
+  const { token, setToken, userData } = useContext(AuthContext);
   const [isOpen, setIsOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
 
-  function logOut(){
+  function logOut() {
     setToken(null);
-    localStorage.removeItem('token')
+    localStorage.removeItem("token");
   }
 
   return (
-     <nav className="sticky top-0 z-50 border-b border-gray-200 bg-white shadow-sm">
+    <nav className="sticky top-0 z-50 border-b border-gray-200 bg-white shadow-sm">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Brand */}
@@ -83,16 +83,25 @@ export default function Nav() {
             {/* User Dropdown - Only when logged in */}
             {token && (
               <div className="group relative">
-                <button className="flex items-center gap-2 rounded-full border-2 border-gray-200 p-0.5 transition-all hover:border-blue-500">
+                <button
+                  onClick={() => setOpenMenu(!openMenu)}
+                  className="flex items-center gap-2 rounded-full border-2 border-gray-200 p-0.5 transition-all hover:border-blue-500"
+                >
                   <img
-                    src={userData?.photo || "https://flowbite.com/docs/images/people/profile-picture-5.jpg"}
+                    src={
+                      userData?.photo ||
+                      "https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                    }
                     alt="User settings"
                     className="h-9 w-9 rounded-full object-cover"
                   />
                 </button>
 
                 {/* Dropdown Menu */}
-                <div className="invisible absolute right-0 top-full mt-2 w-56 origin-top-right scale-95 transform rounded-2xl border border-gray-100 bg-white opacity-0 shadow-lg transition-all group-hover:visible group-hover:scale-100 group-hover:opacity-100">
+                <div
+                  className={`absolute right-0 top-full mt-2 w-56 origin-top-right rounded-2xl border border-gray-100 bg-white shadow-lg transition-all ${openMenu ? "scale-100 opacity-100 visible" : "scale-95 opacity-0 invisible"}`}
+                >
+                  {" "}
                   {/* User Info Header */}
                   <div className="border-b border-gray-100 px-4 py-3">
                     <p className="text-sm font-semibold text-gray-900">
@@ -102,7 +111,6 @@ export default function Nav() {
                       {userData && userData.email}
                     </p>
                   </div>
-
                   {/* Menu Items */}
                   <div className="py-2">
                     <Link
@@ -120,7 +128,6 @@ export default function Nav() {
                       <span>Settings</span>
                     </Link>
                   </div>
-
                   {/* Sign Out */}
                   <div className="border-t border-gray-100 py-2">
                     <Link
@@ -141,7 +148,9 @@ export default function Nav() {
               onClick={toggle}
               className="rounded-lg p-2 text-gray-600 transition-all hover:bg-blue-50 hover:text-blue-600 md:hidden"
             >
-              <i className={`fa-solid ${isOpen ? "fa-xmark" : "fa-bars"} text-xl`}></i>
+              <i
+                className={`fa-solid ${isOpen ? "fa-xmark" : "fa-bars"} text-xl`}
+              ></i>
             </button>
           </div>
         </div>

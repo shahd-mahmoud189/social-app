@@ -6,11 +6,24 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function ProfileSection({ postsLength, userData, isFollowing}) {
   const { token, userData: myData } = useContext(AuthContext);
-console.log(isFollowing);
 
-  const { register, handleSubmit } = useForm({
+  const { register, handleSubmit, formState } = useForm({
     defaultValues: {
       photo: null,
+    },
+  });
+
+   const queryClient = useQueryClient();
+
+  const { mutate:mutatePhoto } = useMutation({
+    mutationFn: uploadPhoto,
+    onSuccess: () => {
+      console.log("successssss");
+      queryClient.invalidateQueries(["user", myData?._id]);
+      queryClient.invalidateQueries(["myPosts"]);
+    },
+    onError: () => {
+      console.log("errorrrrrrr");
     },
   });
 
@@ -31,16 +44,18 @@ console.log(isFollowing);
     } catch (error) {
       // setMsg(error.response.data.message || "Something went wrong!");
       console.log(error);
+              console.log(formState.errors.photo.message);
+
     }
   }
 
-  const queryClient = useQueryClient();
+ 
 
   const { mutate, isPending } = useMutation({
     mutationFn: follow,
     onSuccess: () => {
       console.log("successssss");
-      queryClient.invalidateQueries(["user", id]);
+      queryClient.invalidateQueries(["user", userData._id]);
     },
     onError: () => {
       console.log("errorrrrrrr");
@@ -59,11 +74,14 @@ console.log(isFollowing);
       return data.data;
     } catch (error) {
       console.log(error.response);
+
     }
      //finally {
     //   setLoading(false);
     // }
   }
+
+  
 
   return (
     <>
@@ -71,6 +89,7 @@ console.log(isFollowing);
         {/* Header Section */}
         <div className="pt-8 pb-12 text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-6 border-b border-gray-100">
           <div className="flex flex-col md:flex-row items-center gap-6">
+            
             {/* Avatar with Ring Effect */}
             <div className="relative group">
               <div className="absolute -inset-1 bg-linear-to-r from-blue-500 to-blue-600 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-500"></div>
@@ -80,7 +99,7 @@ console.log(isFollowing);
                 className="relative w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-white shadow-xl object-cover bg-gray-100"
               />
               <form
-                onSubmit={handleSubmit(uploadPhoto)}
+                onSubmit={handleSubmit(mutatePhoto)}
                 className="absolute bottom-1 right-1"
               >
                 {myData?._id === userData?._id && (
@@ -93,13 +112,19 @@ console.log(isFollowing);
                         className="hidden"
                         {...register("photo", {
                           onChange: () => {
-                            handleSubmit(uploadPhoto)();
+                            handleSubmit(mutatePhoto)();
                           },
                         })}
                       />
                     </label>
                   </>
                 )}
+                {/* {formState.errors.photo && (
+                <p className="mt-2 text-sm text-red-500 flex items-center gap-1">
+                  <i className="fa-solid fa-circle-exclamation"></i>
+                  {formState.errors.photo.message}
+                </p>
+              )} */}
               </form>
             </div>
 
