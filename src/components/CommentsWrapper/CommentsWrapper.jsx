@@ -138,7 +138,7 @@ export default function CommentsWrapper({ handleClose, isOpen, postId }) {
             <input
               type="text"
               placeholder="Write a comment..."
-              className="flex-1 rounded-lg border border-gray-300 bg-white dark:bg-gray-700 p-2.5 text-gray-900 focus:ring-blue-500 focus:border-blue-500"
+              className="flex-1 rounded-lg border border-gray-300 bg-white  p-2.5 text-gray-900 focus:ring-blue-500 focus:border-blue-500"
               {...register("content", { required: true })}
             />
             <button
