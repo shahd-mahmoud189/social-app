@@ -4,38 +4,48 @@ import { createContext, useEffect, useState } from 'react'
 
 export const AuthContext = createContext()
 
-export default function AuthContextProvider({children}) {
+export default function AuthContextProvider({ children }) {
+  const [token, setToken] = useState(localStorage.getItem('token'))
+  const [userData, setUserData] = useState(null)
 
-    const [token, setToken] = useState(localStorage.getItem('token'))
-    const [userData, setUserData] = useState(null)
-
-    async function getUserData() {
+  async function getUserData() {
+    if (!token) return null; 
     try {
-      const {data} = await axios.get('https://route-posts.routemisr.com/users/profile-data',{
-        headers: { Authorization: `Bearer ${token}` }
+      const { data } = await axios.get('https://route-posts.routemisr.com/users/profile-data', {
+        headers: { token: token }
       })
-      setUserData(data.data.user)
-      console.log(data);
+      setUserData(data.user)
       return data
-      
     } catch (error) {
-      console.log(error.response);
+      if (error.response?.status === 401 || error.response?.status === 403) {
+        handleLogout(); 
+      }
+      throw error; 
     }
-  }  
+  }
 
-  const {data}= useQuery({
-    queryFn:getUserData,
-    queryKey:["userData"],
+  function handleLogout() {
+    localStorage.removeItem('token');
+    setToken(null);
+    setUserData(null);
+   
+  }
+
+  const { data, isError } = useQuery({
+    queryFn: getUserData,
+    queryKey: ["userData", token], 
+    enabled: !!token, 
+    retry: false 
   })
 
   useEffect(() => {
-  if (token) {
-    getUserData();
-  }
-}, [token]);
+    if (data?.user) {
+      setUserData(data.user);
+    }
+  }, [data]);
 
   return (
-    <AuthContext.Provider value={{token, setToken, userData, setUserData}}>
+    <AuthContext.Provider value={{ token, setToken, userData, setUserData, handleLogout }}>
       {children}
     </AuthContext.Provider>
   )
