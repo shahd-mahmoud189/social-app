@@ -11,12 +11,12 @@ export default function PostCard({
   setIsOpen,
   setPostId,
   setPost,
-  toggle,
-  setIsLiked,
+  toggle
 }) {
   const { token, userData } = useContext(AuthContext);
 
   const queryClient = useQueryClient();
+
 
   const { mutate } = useMutation({
     mutationFn: deletePost,
@@ -43,32 +43,72 @@ export default function PostCard({
     }
   }
 
-  // async function getLikes() {
-  //   try {
-  //     const response = await axios.get(
-  //       `https://route-posts.routemisr.com/posts/:${post._id}/likes?page=1&limit=20`,
-  //       { headers: { Authorization: `Bearer ${token}` } },
-  //     );
-  //     console.log(response.data.data.posts);
-
-  //     return response.data.data.posts;
-  //   } catch (error) {
-  //     console.log(error.response);
-  //   }
-  // }
-
   const { mutate: mutateLike } = useMutation({
-    mutationFn: likePost,
-    onSuccess: () => {
-      console.log("successssss");
-      queryClient.invalidateQueries(["allPosts"]);
-      queryClient.invalidateQueries(["userPosts"]);
-      queryClient.invalidateQueries(["myPosts"]);
-    },
-    onError: () => {
-      console.log("errorrrrrrr");
-    },
-  });
+  mutationFn: likePost,
+
+  onMutate: async (postId) => {
+    await Promise.all([
+      queryClient.cancelQueries(["allPosts"]),
+      queryClient.cancelQueries(["userPosts"]),
+      queryClient.cancelQueries(["myPosts"]),
+      queryClient.cancelQueries(["allbookmarks"]),
+      queryClient.cancelQueries(["feed"]),
+    ]);
+
+    const previousAllPosts = queryClient.getQueryData(["allPosts"]);
+    const previousUserPosts = queryClient.getQueryData(["userPosts"]);
+    const previousMyPosts = queryClient.getQueryData(["myPosts"]);
+    const previousBookmarks = queryClient.getQueryData(["allbookmarks"]);
+    const previousFeed = queryClient.getQueryData(["feed"]);
+
+    const updatePosts = (old) => {
+      if (!old) return old;
+
+      return old.map((post) =>
+        post._id === postId
+          ? {
+              ...post,
+              likes: post.likes.includes(userData?._id)
+                ? post.likes.filter((id) => id !== userData?._id)
+                : [...post.likes, userData?._id],
+
+              likesCount: post.likes.includes(userData?._id)
+                ? post.likesCount - 1
+                : post.likesCount + 1,
+            }
+          : post
+      );
+    };
+
+    queryClient.setQueryData(["allPosts"], updatePosts);
+    queryClient.setQueryData(["userPosts"], updatePosts);
+    queryClient.setQueryData(["myPosts"], updatePosts);
+    queryClient.setQueryData(["allbookmarks"], updatePosts);
+    queryClient.setQueryData(["feed"], updatePosts);
+
+    return {
+      previousAllPosts,
+      previousUserPosts,
+      previousMyPosts,
+      previousBookmarks,
+      previousFeed
+    };
+  },
+
+  onError: () => {
+    console.log("errorrrrrrr");
+  },
+
+  onSettled: () => {
+    queryClient.invalidateQueries(["allPosts"]);
+    queryClient.invalidateQueries(["userPosts"]);
+    queryClient.invalidateQueries(["myPosts"]);
+    queryClient.invalidateQueries(["allbookmarks"]);
+    queryClient.invalidateQueries(["feed"]);
+  },
+});
+
+  
 
   async function likePost(id) {
     try {
@@ -78,7 +118,6 @@ export default function PostCard({
         { headers: { Authorization: `Bearer ${token}` } },
       );
       console.log(data);
-      setIsLiked(data.data.liked);
       return data.data;
     } catch (error) {
       console.log(error.response);
@@ -93,7 +132,6 @@ export default function PostCard({
         { headers: { Authorization: `Bearer ${token}` } },
       );
       console.log(data);
-      setIsLiked(data.data.liked);
       return data.data;
     } catch (error) {
       console.log(error.response);

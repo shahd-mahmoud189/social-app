@@ -16,6 +16,7 @@ export default function AuthContextProvider({children}) {
       })
       setUserData(data.data.user)
       console.log(data);
+      return data
       
     } catch (error) {
       console.log(error.response);

@@ -51,14 +51,11 @@ export default function Posts() {
 
   return (
     <>
-      {/* أضفنا overflow-hidden للمنع، وقمنا بتعديل الـ mx-8 إلى px-4 ليكون أكثر أماناً */}
       <div className="grid grid-cols-1 lg:grid-cols-4 lg:gap-x-10 px-4 md:px-8 max-w-full overflow-x-hidden">
-        {/* العمود الأيسر (فارغ في الشاشات الكبيرة) - مخفي في الموبايل لعدم حجز مساحة */}
         <div className="hidden lg:block lg:col-span-1 mt-4">
           <ProfileCard />
         </div>
 
-        {/* العمود الأوسط (المنشورات) */}
         <div className="col-span-1 lg:col-span-2 w-full max-w-full">
           <AddPostForm />
 
@@ -68,7 +65,7 @@ export default function Posts() {
             
             {" "}
             {posts?.length === 0&&<><Empty/></>}
-            {/* إضافة container للمنشورات لضمان التنسيق */}
+            
             {isFetched &&
               posts.map((post) => (
                 <PostCard
@@ -99,7 +96,6 @@ export default function Posts() {
           />
         </div>
 
-        {/* عمود الاقتراحات - يظهر في الأول في الموبايل وفي مكانه في الكبير */}
         <div className="col-span-1 lg:col-span-1 order-first lg:order-last mb-5 lg:mb-0">
           <SuggestedFriends />
         </div>

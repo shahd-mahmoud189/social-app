@@ -126,7 +126,7 @@ export default function SuggestedFriends() {
                   <div className="flex-1 min-w-0">
                     <Link
                       to={`/userProfile/${suggestion._id}`}
-                      className="font-semibold text-gray-900 truncate"
+                      className="font-semibold text-gray-900 truncate block"
                     >
                       {suggestion.name}
                     </Link>

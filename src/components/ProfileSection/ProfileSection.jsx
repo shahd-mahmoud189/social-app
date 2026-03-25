@@ -45,7 +45,7 @@ export default function ProfileSection({ postsLength, userData, isFollowing}) {
     } catch (error) {
       // setMsg(error.response.data.message || "Something went wrong!");
       console.log(error);
-              console.log(formState.errors.photo.message);
+      console.log(formState.errors.photo.message);
 
     }
   }
