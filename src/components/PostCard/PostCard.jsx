@@ -231,7 +231,7 @@ export default function PostCard({
               <i className="fa-solid fa-up-right-from-square text-[10px]"></i>
               View Post
             </Link>
-            <p className="text-gray-900 text-sm leading-relaxed mt-1">{post.body}</p>
+            <p className="text-gray-900 text-sm leading-relaxed mt-1">{post.body}</p> 
           </div>
 
           {/* Post Image */}
