@@ -14,7 +14,7 @@ export default function AuthContextProvider({ children }) {
       const { data } = await axios.get('https://route-posts.routemisr.com/users/profile-data', {
         headers: { token: token }
       })
-      setUserData(data.user)
+      setUserData(data.data.user)
       return data
     } catch (error) {
       if (error.response?.status === 401 || error.response?.status === 403) {
@@ -38,9 +38,12 @@ export default function AuthContextProvider({ children }) {
     retry: false 
   })
 
+  console.log(data);
+  
+
   useEffect(() => {
-    if (data?.user) {
-      setUserData(data.user);
+    if (data?.data.user) {
+      setUserData(data.data.user);
     }
   }, [data]);
 
